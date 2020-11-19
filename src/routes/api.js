@@ -17,6 +17,7 @@ Router.post('/auth/email-confirm', accessGuard(), authController.confirmEmail);
 Router.post('/auth/password-reset', resetPasswordGuard(), authController.resetPassword);
 Router.post('/auth/password-restore', resetPasswordGuard(), authController.restorePassword);
 Router.post('/auth/send-confirm-code', accessGuard(), authController.sendConfirmEmailCode);
+Router.post('/auth/logout', accessGuard(), authController.logout);
 
 /* Not found handler */
 Router.use((req, res, next) => next(new APIError(`${req.url} - Not Found`, 404)));

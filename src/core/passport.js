@@ -1,8 +1,9 @@
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
-import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
+import { Strategy as JWTStrategy } from 'passport-jwt';
 import { User } from '../models';
 import env from '../config/env';
+import { getTokenCookie } from '../utils/auth-cookies';
 
 passport.use(new LocalStrategy(
   {
@@ -26,7 +27,7 @@ passport.use(new LocalStrategy(
 
 passport.use(new JWTStrategy(
   {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: getTokenCookie,
     ignoreExpiration: false,
     secretOrKey: env.JWT_SECRET,
   },

@@ -1,6 +1,7 @@
 import { successResponse } from '../utils/response';
 import { User } from '../models';
 import APIError from '../utils/APIError';
+import { setTokenCookie, removeTokenCookie } from '../utils/auth-cookies';
 
 const authController = {
   register: async (req, res) => {
@@ -9,8 +10,9 @@ const authController = {
     const user = await User.create({ userName, email, password });
     const token = await user.getToken();
 
+    setTokenCookie(res, token);
+
     return successResponse(res, {
-      token,
       user,
     });
   },
@@ -20,8 +22,9 @@ const authController = {
 
     const token = await user.getToken();
 
+    setTokenCookie(res, token);
+
     return successResponse(res, {
-      token,
       user,
     });
   },
@@ -81,10 +84,18 @@ const authController = {
 
     await user.save();
 
+    const token = await user.getToken();
+
+    setTokenCookie(res, token);
+
     return successResponse(res, {
-      token: await user.getToken(),
       user,
     });
+  },
+
+  logout: async (req, res) => {
+    removeTokenCookie(res);
+    return successResponse(res, { message: 'Logout success' });
   },
 };
 

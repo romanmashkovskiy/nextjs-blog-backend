@@ -11,7 +11,10 @@ import env from './config/env';
 const { PORT = 4001 } = env;
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  credentials: true,
+  origin: 'http://localhost:3000',
+}));
 
 const logger = morgan('tiny');
 app.use(logger);

@@ -67,7 +67,7 @@ class UserClass {
   }
 
   getToken() {
-    return jwt.sign(this.getTokenData(), env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
+    return jwt.sign(this.getTokenData(), env.JWT_SECRET, { expiresIn: Number(env.JWT_EXPIRES_IN) });
   }
 
   verifyPassword(candidatePassword) {
