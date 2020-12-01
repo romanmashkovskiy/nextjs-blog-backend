@@ -5,6 +5,7 @@ import { errorResponse } from '../utils/response';
 import { loginGuard, accessGuard, resetPasswordGuard } from '../middlewares';
 import {
   authController,
+  articlesController,
 } from '../controllers';
 
 const Router = PromiseRouter();
@@ -18,6 +19,11 @@ Router.post('/auth/password-reset', resetPasswordGuard(), authController.resetPa
 Router.post('/auth/password-restore', resetPasswordGuard(), authController.restorePassword);
 Router.post('/auth/send-confirm-code', accessGuard(), authController.sendConfirmEmailCode);
 Router.post('/auth/logout', accessGuard(), authController.logout);
+
+/* Articles */
+Router.get('/articles', articlesController.getAllArticles);
+Router.get('/user-articles', accessGuard(), articlesController.getUsersArticles);
+Router.post('/articles', accessGuard(), articlesController.createArticle);
 
 /* Not found handler */
 Router.use((req, res, next) => next(new APIError(`${req.url} - Not Found`, 404)));
