@@ -1,30 +1,20 @@
 import { successResponse } from '../utils/response';
-import { Article, Review } from '../models';
+import { Article } from '../models';
 
 const articlesController = {
-  getAllArticles: async (req, res) => successResponse(res, {
-    articles: [
-      {
-        title: 'article1',
-        createdAt: new Date(),
-        description: 'article1 description',
-      },
-      {
-        title: 'article2',
-        createdAt: new Date(),
-        description: 'article2 description',
-      },
-    ],
-  }),
-  getUsersArticles: async (req, res) => successResponse(res, {
-    articles: [
-      {
-        title: 'article1',
-        createdAt: Date.now(),
-        description: 'article1 description',
-      },
-    ],
-  }),
+  getAllArticles: async (req, res) => {
+    const articles = await Article.paginate();
+
+    return successResponse(res, articles);
+  },
+  getUsersArticles: async (req, res) => {
+    const { user } = req;
+
+    const articles = await Article
+      .paginate({ user: user._id }, { populate: 'user' });
+
+    return successResponse(res, articles);
+  },
   createArticle: async (req, res) => {
     const {
       user,

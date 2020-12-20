@@ -1,5 +1,11 @@
 import mongoose, { Schema } from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 import { ReviewSchema } from './Review';
+
+mongoosePaginate.paginate.options = {
+  page: 1,
+  limit: 10,
+};
 
 const ArticleSchema = new Schema({
   title: {
@@ -57,6 +63,8 @@ class ArticleClass {
 
 ArticleSchema.loadClass(ArticleClass);
 
-const Product = mongoose.model('Article', ArticleSchema);
+ArticleSchema.plugin(mongoosePaginate);
 
-export default Product;
+const Article = mongoose.model('Article', ArticleSchema);
+
+export default Article;
